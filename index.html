@@ -1,0 +1,257 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Modern Sign Up Form</title>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #4e73df, #1cc88a);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(15px);
+        padding: 30px;
+        width: 380px;
+        border-radius: 15px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        animation: fadeIn 0.6s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+        position: relative;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 2px solid transparent;
+        outline: none;
+        transition: 0.3s;
+      }
+
+      input:focus {
+        border-color: #fff;
+      }
+
+      .error {
+        font-size: 12px;
+        color: #ff6b6b;
+      }
+
+      .success-border {
+        border-color: #2ecc71 !important;
+      }
+
+      .error-border {
+        border-color: #ff6b6b !important;
+      }
+
+      .strength {
+        height: 5px;
+        border-radius: 5px;
+        margin-top: 5px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background: #fff;
+        color: #333;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background: #ddd;
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 35px;
+        cursor: pointer;
+        font-size: 12px;
+        color: #333;
+      }
+
+      .success-message {
+        text-align: center;
+        margin-top: 10px;
+        color: #2ecc71;
+        font-weight: bold;
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Create Account</h2>
+
+      <form id="form">
+        <div class="form-group">
+          <input type="text" id="name" placeholder="Full Name" />
+          <div class="error" id="nameError"></div>
+        </div>
+
+        <div class="form-group">
+          <input type="email" id="email" placeholder="Email Address" />
+          <div class="error" id="emailError"></div>
+        </div>
+
+        <div class="form-group">
+          <input type="text" id="login" placeholder="Login ID" />
+          <div class="error" id="loginError"></div>
+        </div>
+
+        <div class="form-group">
+          <input type="password" id="password" placeholder="Password" />
+          <span class="toggle-password" onclick="togglePassword()">Show</span>
+          <div class="strength" id="strengthBar"></div>
+          <div class="error" id="passwordError"></div>
+        </div>
+
+        <div class="form-group">
+          <input type="checkbox" id="policy" /> I agree to terms & policy
+          <div class="error" id="policyError"></div>
+        </div>
+
+        <button type="submit">Register</button>
+
+        <div class="success-message" id="successMsg">
+          ✅ Registration Successful!
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const form = document.getElementById("form");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); // stop default submit
+
+        let isValid = true;
+
+        // Get values
+        const name = document.getElementById("name");
+        const email = document.getElementById("email");
+        const login = document.getElementById("login");
+        const password = document.getElementById("password");
+        const policy = document.getElementById("policy");
+
+        // Clear old errors
+        document
+          .querySelectorAll(".error")
+          .forEach((el) => (el.innerText = ""));
+        document.querySelectorAll("input").forEach((el) => {
+          el.classList.remove("error-border", "success-border");
+        });
+
+        // Name validation
+        if (name.value.trim() === "" || name.value.length < 3) {
+          document.getElementById("nameError").innerText =
+            "Enter valid name (min 3 characters)";
+          name.classList.add("error-border");
+          isValid = false;
+        } else {
+          name.classList.add("success-border");
+        }
+
+        // Email validation
+        const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+        if (email.value.trim() === "") {
+          document.getElementById("emailError").innerText = "Email is required";
+          email.classList.add("error-border");
+          isValid = false;
+        } else if (!email.value.match(emailPattern)) {
+          document.getElementById("emailError").innerText =
+            "Enter valid email address";
+          email.classList.add("error-border");
+          isValid = false;
+        } else {
+          email.classList.add("success-border");
+        }
+
+        // Login validation
+        if (login.value.trim() === "" || login.value.length < 4) {
+          document.getElementById("loginError").innerText =
+            "Login must be at least 4 characters";
+          login.classList.add("error-border");
+          isValid = false;
+        } else {
+          login.classList.add("success-border");
+        }
+
+        // Password validation
+        const passValue = password.value.trim();
+        if (passValue === "") {
+          document.getElementById("passwordError").innerText =
+            "Password is required";
+          password.classList.add("error-border");
+          isValid = false;
+        } else if (passValue.length < 6) {
+          document.getElementById("passwordError").innerText =
+            "Password must be 6+ characters";
+          password.classList.add("error-border");
+          isValid = false;
+        } else if (!/[A-Z]/.test(passValue) || !/[0-9]/.test(passValue)) {
+          document.getElementById("passwordError").innerText =
+            "Password must contain 1 uppercase & 1 number";
+          password.classList.add("error-border");
+          isValid = false;
+        } else {
+          password.classList.add("success-border");
+        }
+
+        // Policy validation
+        if (!policy.checked) {
+          document.getElementById("policyError").innerText =
+            "You must agree to the policy";
+          isValid = false;
+        }
+
+        // Final check
+        if (isValid) {
+          document.getElementById("successMsg").style.display = "block";
+
+          // Optional: reset form after success
+          form.reset();
+
+          document.querySelectorAll("input").forEach((el) => {
+            el.classList.remove("success-border");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

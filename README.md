@@ -1,9 +1,7 @@
 # Modern Registration Form with Advanced JavaScript Validation
-
 A stylish and fully validated Registration Form built using pure HTML, CSS, and JavaScript (no libraries or frameworks).
 
 ## 🚀 Features
-
 - Modern Glassmorphism UI Design
 - Real-time Input Validation
 - Submit-time Full Form Validation
